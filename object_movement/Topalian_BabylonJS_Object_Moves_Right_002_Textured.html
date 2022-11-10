@@ -1,0 +1,226 @@
+<!-- Dedicated to God the Father -->
+
+<!-- All Rights Reserved Christopher Topalian 2000-2022 Copyright -->
+
+<!-- https://github.com/ChristopherTopalian -->
+
+<!-- https://github.com/ChristopherTopalian/Topalian_BabylonJS -->
+
+<!-- Topalian_BabylonJS_Object_Moves_Right_002_Textured.html -->
+
+<!--
+We create a scene.
+We create a camera in our scene.
+We create a light in our scene.
+We create a cube in our scene.
+We color the cube.
+We texture the cube - IMPORTANT: The Texture must be located on the same server domain that is running this Script!
+In this case, we uploaded our texture to the weebly server domain.
+We then pasted this script into the Embed Code section of a weebly website page and then published the page.
+In this way, both the texture and the script are located on the same server domain.
+Now, when we visit the weebly website page, it will run the script and use the textures successfully.
+We make our camera follow the cube.
+We create a ground in our scene.
+We color the ground.
+We set the texture of the ground - IMPORTANT: The Texture must be located on the same server domain that is running this Script!
+The cube moves to the right at a constant rate.
+The camera follows the cube.
+-->
+
+<!--
+Video of the Script Running in the Browser
+https://www.youtube.com/watch?v=3AhtxRv6gl8
+-->
+
+<!--
+Website - Shows the Script in Action
+https://collegeofscripting.weebly.com/topalian-babylonjs-object-moves-right-textured.html
+-->
+
+<html>
+<head>
+
+<!-- internet source for the engine file - cdn version -->
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/babylonjs/5.30.0/babylon.js"></script>
+
+<!-- internet source for the engine file - preview version -->
+<!--
+<script src = "https://preview.babylonjs.com/babylon.js"></script>
+-->
+
+<!-- local source for the engine file -->
+<!--
+<script src = "../js/babylon_min.js"></script>
+-->
+
+<title> Topalian JavaScript - 3D </title>
+
+<style>
+
+html
+{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+body
+{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+#theCanvas
+{
+    width: 100%;
+    height: 100%;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<canvas id = "theCanvas"></canvas>
+
+<script>
+
+// get the canvas element
+let canvas = document.getElementById("theCanvas");
+
+// create the Babylon 3D Engine
+let engine = new BABYLON.Engine(canvas, true);
+
+// scene creation
+let createScene = function()
+{
+    // create the scene
+    let scene = new BABYLON.Scene(engine);
+
+    //////////////////////////
+
+    // create a camera in the scene
+    let camera001 = new BABYLON.ArcRotateCamera("Camera001", Math.PI / 2, 15 * Math.PI / 32, 25, BABYLON.Vector3.Zero(), scene);
+
+    // attach camera001 to the canvas
+    camera001.attachControl(canvas, true);
+
+    //////////////////////////
+
+    // create a light in the scene
+    let light001 = new BABYLON.HemisphericLight("Light001", new BABYLON.Vector3(4700, -2000, -5900), scene);
+
+    light001.intensity = 5.2;
+    light001.range = 0.5;
+
+    // turn light001 off
+    // light001.setEnabled(false); // true for on
+
+    //////////////////////////
+
+    // create a cube
+    let box001 = BABYLON.MeshBuilder.CreateBox("Box001",
+    {
+        width: 2.0,
+        height: 2.0,
+        depth: 2.0
+    }, scene);
+
+    // make camera001 follow box001
+    camera001.target = box001;
+
+    // set box001 x position to 0.0
+    box001.position.x = 0.0;
+
+    // set box001 y position to 1.5
+    box001.position.y = 1.5;
+
+    //////////////////////////
+
+    let amountToMoveBy = 0.0;
+
+    // timer - move box001 right
+    let timerMoveObject;
+    timerMoveObject = setInterval(function()
+    {
+        amountToMoveBy += 0.1;
+
+        // box001 moves by 0.1 in the -X direction, right
+        box001.position.x = -amountToMoveBy;
+
+    }, 20);
+
+    //////////////////////////
+
+    // create a material
+    let material001 = new BABYLON.StandardMaterial("Material001", scene);
+
+    // set the color of material001
+    material001.diffuseColor = new BABYLON.Color3(1, 1, 1);
+
+    // set the texture of material001 - IMPORTANT: Texture must be located on the same server domain that is running this Script
+    material001.diffuseTexture = new BABYLON.Texture("https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/wood_001.jpg");
+
+    // apply material001 to box001
+    box001.material = material001;
+
+    //////////////////////////
+
+    // create a ground
+    let ground = BABYLON.MeshBuilder.CreateGround("Ground",
+    {
+        width: 200.0,
+        height: 200.0
+    }, scene);
+
+    //////////////////////////
+
+    // create a material
+    let material002 = new BABYLON.StandardMaterial("Material002", scene);
+
+    // set the color of material002
+    material002.diffuseColor = new BABYLON.Color3(0.4, 0.4, 0.4);
+
+    // set the texture of material002 - IMPORTANT: Texture must be located on the same server domain that is running this Script
+    material002.diffuseTexture = new BABYLON.Texture("https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/concrete_001.jpg");
+
+    // apply material002 to the ground
+    ground.material = material002;
+
+    //////////////////////////
+
+    return scene;
+};
+
+//////////////////////////
+
+// activate the createScene function
+let scene = createScene();
+
+//////////////////////////
+
+// create the render loop to render the scene
+engine.runRenderLoop(function()
+{
+    scene.render();
+});
+
+//////////////////////////
+
+window.addEventListener("resize", function()
+{
+    // when browser and/or canvas resize happens
+    engine.resize();
+});
+
+</script>
+
+</body>
+
+</html>
